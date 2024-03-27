@@ -1,9 +1,15 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 
+import 'package:flutter_udid/flutter_udid.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'scan_provider.dart';
@@ -31,11 +37,124 @@ class _ScannerScreenState extends State<ScannerScreen>
   bool _isCameraReady = false;
   late ScanProvider _scanProvider;
 
+  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  String deviceInfoTitle = '';
+  Map<String, dynamic> _deviceData = <String, dynamic>{};
+
+  String _udid = 'Unknown';
+  String deviceModel = 'Unknown';
+  String deviceId = 'Unknown';
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _sdkInit();
+    initGetUdId();
+    initGetDevInfo();
+  }
+
+  Future<void> initGetDevInfo() async {
+    var deviceData = <String, dynamic>{};
+
+    try {
+      if (kIsWeb) {
+        deviceData = _readWebBrowserInfo(await deviceInfoPlugin.webBrowserInfo);
+      } else {
+        deviceData = switch (defaultTargetPlatform) {
+          TargetPlatform.android =>
+            _readAndroidBuildData(await deviceInfoPlugin.androidInfo),
+          TargetPlatform.iOS =>
+            _readIosDeviceInfo(await deviceInfoPlugin.iosInfo),
+          TargetPlatform.linux =>
+            _readLinuxDeviceInfo(await deviceInfoPlugin.linuxInfo),
+          TargetPlatform.windows =>
+            _readWindowsDeviceInfo(await deviceInfoPlugin.windowsInfo),
+          TargetPlatform.macOS =>
+            _readMacOsDeviceInfo(await deviceInfoPlugin.macOsInfo),
+          TargetPlatform.fuchsia => <String, dynamic>{
+              'Error:': 'Fuchsia platform isn\'t supported'
+            },
+        };
+
+        // Mengambil ID perangkat sesuai platform
+        deviceInfoTitle = _getDeviceId(deviceData);
+      }
+    } on PlatformException {
+      deviceInfoTitle = 'Failed to get platform version.';
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      // Set state untuk memperbarui tampilan dengan ID perangkat
+      deviceInfoTitle = deviceInfoTitle;
+    });
+  }
+
+  Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
+    return <String, dynamic>{
+      'id': build.id, // Hanya menampilkan ID perangkat untuk Android
+    };
+  }
+
+  Map<String, dynamic> _readIosDeviceInfo(IosDeviceInfo data) {
+    return <String, dynamic>{
+      'identifierForVendor': data
+          .identifierForVendor, // Hanya menampilkan identifierForVendor untuk iOS
+    };
+  }
+
+  Map<String, dynamic> _readLinuxDeviceInfo(LinuxDeviceInfo data) {
+    return <String, dynamic>{
+      'Error:': 'Linux platform isn\'t supported',
+    };
+  }
+
+  Map<String, dynamic> _readWebBrowserInfo(WebBrowserInfo data) {
+    return <String, dynamic>{
+      'Error:': 'Web platform isn\'t supported',
+    };
+  }
+
+  Map<String, dynamic> _readMacOsDeviceInfo(MacOsDeviceInfo data) {
+    return <String, dynamic>{
+      'Error:': 'MacOS platform isn\'t supported',
+    };
+  }
+
+  Map<String, dynamic> _readWindowsDeviceInfo(WindowsDeviceInfo data) {
+    return <String, dynamic>{
+      'Error:': 'Windows platform isn\'t supported',
+    };
+  }
+
+  // Fungsi untuk mengambil ID perangkat sesuai platform
+  String _getDeviceId(Map<String, dynamic> deviceData) {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      return deviceData['id'] ??
+          'Unknown'; // Mengambil ID perangkat untuk Android
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+      return deviceData['identifierForVendor'] ??
+          'Unknown'; // Mengambil identifierForVendor untuk iOS
+    } else {
+      return 'Unsupported Platform'; // Platform selain Android dan iOS tidak didukung
+    }
+  }
+
+  Future<void> initGetUdId() async {
+    String udid;
+    try {
+      udid = await FlutterUdid.udid;
+    } on PlatformException {
+      udid = 'Failed to get UDID.';
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _udid = udid;
+    });
   }
 
   Future<void> _sdkInit() async {
@@ -224,6 +343,9 @@ class _ScannerScreenState extends State<ScannerScreen>
               ],
             ),
           ),
+          Text('ID From UDID: $_udid', textAlign: TextAlign.center),
+          Text('ID From Device Info: $deviceInfoTitle',
+              textAlign: TextAlign.center),
           SizedBox(height: 16),
           Expanded(
             child: Card(
@@ -367,6 +489,17 @@ class _ScannerScreenState extends State<ScannerScreen>
       body: createSwitchWidget(),
     );
   }
+
+  String _getAppBarTitle() => kIsWeb
+      ? 'Web Browser info'
+      : switch (defaultTargetPlatform) {
+          TargetPlatform.android => 'Android Device Info',
+          TargetPlatform.iOS => 'iOS Device Info',
+          TargetPlatform.linux => 'Linux Device Info',
+          TargetPlatform.windows => 'Windows Device Info',
+          TargetPlatform.macOS => 'MacOS Device Info',
+          TargetPlatform.fuchsia => 'Fuchsia Device Info',
+        };
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
