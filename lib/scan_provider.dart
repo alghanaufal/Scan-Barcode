@@ -1,5 +1,6 @@
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/src/material/app.dart';
 
 class ScanProvider extends ChangeNotifier {
   int _types = 0;
@@ -29,4 +30,6 @@ class ScanProvider extends ChangeNotifier {
     _results.remove(key);
     notifyListeners();
   }
+
+  void setTheme(ThemeMode dark) {}
 }

@@ -43,7 +43,6 @@ dependencies:
   flutter_exif_rotation: ^0.5.1
   flutter_launcher_icons: "^0.13.1"
   flutter_udid: ^3.0.0
-  device_info_plus: ^8.2.2
 
 dev_dependencies:
   flutter_test:
