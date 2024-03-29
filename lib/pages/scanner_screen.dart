@@ -5,8 +5,8 @@ import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutte
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'scan_provider.dart';
-import 'scanner_card.dart';
+import '../utils/scan_provider.dart';
+import '../utils/scanner_card.dart';
 
 class ScannerScreen extends StatefulWidget {
   const ScannerScreen({super.key});

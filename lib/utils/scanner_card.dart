@@ -6,8 +6,8 @@ import 'package:flutter_udid/flutter_udid.dart';
 
 import 'barcode_utils.dart';
 import 'scan_provider.dart';
-import 'config.dart';
-import 'restapi.dart';
+import '../config/config.dart';
+import '../config/restapi.dart';
 
 class ScannerCard extends StatefulWidget {
   final List<BarcodeResult> result;

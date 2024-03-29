@@ -1,13 +1,13 @@
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
 import 'package:flutter_udid/flutter_udid.dart';
-import 'package:scanbarcode/data_screen.dart';
+import 'package:scanbarcode/pages/data_screen.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'scanner_screen.dart';
-import 'scan_provider.dart';
+import 'pages/scanner_screen.dart';
+import 'utils/scan_provider.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(

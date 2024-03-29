@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:scanbarcode/ScannedModel.dart';
+import 'package:scanbarcode/model/ScannedModel.dart';
 
-import 'barcode_utils.dart';
-import 'restapi.dart';
-import 'config.dart';
+import '../utils/barcode_utils.dart';
+import '../config/restapi.dart';
+import '../config/config.dart';
 
 class DataScreen extends StatefulWidget {
   final String device_id;
