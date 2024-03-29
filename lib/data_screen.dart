@@ -52,7 +52,6 @@ class _DataScreenState extends State<DataScreen> {
                       onPressed: () async {
                         bool res = await ds.removeId(
                             token, project, 'scanned', appid, item.id);
-
                         if (res) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -60,6 +59,8 @@ class _DataScreenState extends State<DataScreen> {
                               duration: Duration(seconds: 1),
                             ),
                           );
+                          await selectWhareScanned();
+                          setState(() {});
                         }
                       },
                       child: Icon(Icons.delete),
