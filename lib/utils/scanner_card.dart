@@ -11,15 +11,11 @@ import '../config/restapi.dart';
 
 class ScannerCard extends StatefulWidget {
   final List<BarcodeResult> result;
-  final List<BarcodeResult> tempResult;
-  final List<BarcodeResult> saveResult;
   final ScanProvider scanProvider;
 
   const ScannerCard({
     Key? key,
     required this.result,
-    required this.tempResult,
-    required this.saveResult,
     required this.scanProvider,
   }) : super(key: key);
 
@@ -159,14 +155,10 @@ class _ScannerCardState extends State<ScannerCard> {
                           // Update dataCount with the number of saved results
                           dataCount = res.length;
 
-                          // Remove saved results from widget.result and add them to widget.saveResult
                           widget.result.removeWhere((item) =>
                               res.any((r) => r['code'] == item.barcodeText));
-                          widget.saveResult.addAll(widget.result);
 
-                          // Clear widget.result and widget.tempResult
                           widget.result.clear();
-                          widget.tempResult.clear();
 
                           // Show a SnackBar to confirm the number of saved results
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -184,9 +176,7 @@ class _ScannerCardState extends State<ScannerCard> {
                         setState(() {
                           dataCount = 0;
                           widget.result.forEach((item) {
-                            if (!widget.saveResult.contains(item)) {
-                              dataCount++;
-                            }
+                            dataCount++;
                           });
                           // Memperbarui _scanProvider.results dengan data yang tersimpan
                           widget.result.forEach((item) {
@@ -195,8 +185,6 @@ class _ScannerCardState extends State<ScannerCard> {
                           });
                           // Kosongkan result setelah disimpan di saveResult
                           widget.result.clear();
-                          // Kosongkan tempResult setelah disimpan di saveResult
-                          widget.tempResult.clear();
                           // Konfiramsi
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

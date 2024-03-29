@@ -22,8 +22,6 @@ class _ScannerScreenState extends State<ScannerScreen>
 
   final DCVCameraView _cameraView = DCVCameraView();
   List<BarcodeResult> result = [];
-  List<BarcodeResult> tempResult = [];
-  List<BarcodeResult> saveResult = [];
   int dataCount = 0;
 
   bool _isFlashOn = false;
@@ -69,15 +67,15 @@ class _ScannerScreenState extends State<ScannerScreen>
 
     _barcodeReader.receiveResultStream().listen((List<BarcodeResult>? res) {
       if (mounted) {
-        tempResult = res ?? [];
+        result = res ?? [];
         String msg = '';
-        for (var i = 0; i < tempResult.length; i++) {
-          msg += '${tempResult[i].barcodeText}\n';
+        for (var i = 0; i < result.length; i++) {
+          msg += '${result[i].barcodeText}\n';
 
-          if (_scanProvider.results.containsKey(tempResult[i].barcodeText)) {
+          if (_scanProvider.results.containsKey(result[i].barcodeText)) {
             continue;
           } else {
-            _scanProvider.results[tempResult[i].barcodeText] = tempResult[i];
+            _scanProvider.results[result[i].barcodeText] = result[i];
           }
         }
 
@@ -114,9 +112,6 @@ class _ScannerScreenState extends State<ScannerScreen>
   Widget createSwitchWidget() {
     result = _scanProvider.results.values.toList();
 
-    if (result.isEmpty) {
-      result = tempResult;
-    }
     if (!_isCameraReady) {
       return Center(
         child: CircularProgressIndicator(),
@@ -195,8 +190,6 @@ class _ScannerScreenState extends State<ScannerScreen>
         Expanded(
             child: ScannerCard(
           result: result,
-          tempResult: tempResult,
-          saveResult: saveResult,
           scanProvider: _scanProvider,
         )),
       ],
