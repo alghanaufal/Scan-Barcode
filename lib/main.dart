@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    iniDeviceId();
+    initDeviceId();
     _initLicense();
   }
 
@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  Future<void> iniDeviceId() async {
+  Future<void> initDeviceId() async {
     String udid;
     try {
       udid = await FlutterUdid.udid;
@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         index: _currentIndex,
         children: [
           ScannerScreen(),
-          DataScreen(),
+          DataScreen(device_id: _udid),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

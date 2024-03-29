@@ -42,7 +42,6 @@ class _ScannerCardState extends State<ScannerCard> {
     super.initState();
     iniDeviceId();
 
-    // Set the current date
     DateTime now = DateTime.now();
     created_date = now.day.toString();
     created_month = now.month.toString();
@@ -121,33 +120,31 @@ class _ScannerCardState extends State<ScannerCard> {
                     IconButton(
                       onPressed: () async {
                         setState(() async {
-                          // Initialize a list to hold the results to be saved
                           List<Map<String, dynamic>> resultsToSave = [];
 
-                          // Iterate through each item in widget.result
+                          // lakukan looping untuk widget.result
                           widget.result.forEach((item) {
-                            // Prepare a map containing attributes for insertion
+                            // siapkan map berisi atribut untuk dimasukkan
                             Map<String, dynamic> resultAttributes = {
                               'appid': appid,
                               'device_id': device_id,
-                              'code': item
-                                  .barcodeText, // Using barcode text as code
+                              'code': item.barcodeText,
                               'format': item.barcodeFormatString,
                               'created_date': created_date,
                               'created_month': created_month,
                               'created_month_name': created_month_name,
                               'created_year': created_year
                             };
-                            // Add the map to the list of results to be saved
+                            // tambahkan map to the list results untuk di save
                             resultsToSave.add(resultAttributes);
                             widget.scanProvider.results
                                 .remove(item.barcodeText);
                           });
 
-                          // Insert each result using the DataService
+                          // Insert seluruh result menggunakan DataService
                           List res = await Future.wait(
                               resultsToSave.map((result) async {
-                            // Insert the result and decode the response
+                            // Insert result dan decode ke response
                             return jsonDecode(await ds.insertScanned(
                                 result['appid'],
                                 result['device_id'],
