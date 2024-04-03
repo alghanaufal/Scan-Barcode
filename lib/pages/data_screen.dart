@@ -26,6 +26,9 @@ class _DataScreenState extends State<DataScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("DataTerbaca"),
+      ),
       body: FutureBuilder(
         future: selectWhareScanned(),
         builder: (context, snapshot) {

@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
         useMaterial3: true,
@@ -38,7 +39,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
-  final List<String> _titles = ['Scanner', 'Data'];
   String _udid = 'Unknown';
 
   @override
@@ -63,9 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } on PlatformException {
       udid = 'Failed to get Device Id.';
     }
-
     if (!mounted) return;
-
     setState(() {
       _udid = udid;
     });
@@ -74,40 +72,33 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_titles[_currentIndex]),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return Container(
-                    height: 200,
-                    child: Center(
-                      child: Text('ID : $_udid', textAlign: TextAlign.center),
-                    ),
-                  );
-                },
-              );
-            },
-            icon: Icon(Icons.settings),
-          ),
-        ],
-      ),
       body: IndexedStack(
         index: _currentIndex,
         children: [
-          ScannerScreen(),
+          ScannerScreen(device_id: _udid),
           DataScreen(device_id: _udid),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+          if (index == 2) {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return Container(
+                  height: 200,
+                  child: Center(
+                    child: Text('ID : $_udid', textAlign: TextAlign.center),
+                  ),
+                );
+              },
+            );
+          } else {
+            setState(() {
+              _currentIndex = index;
+            });
+          }
         },
         items: [
           BottomNavigationBarItem(
@@ -117,6 +108,10 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.cloud),
             label: 'Data',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Setting',
           ),
         ],
       ),

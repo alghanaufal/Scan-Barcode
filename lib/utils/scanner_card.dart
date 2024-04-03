@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_udid/flutter_udid.dart';
 
 import 'barcode_utils.dart';
 import 'scan_provider.dart';
@@ -10,11 +8,13 @@ import '../config/config.dart';
 import '../config/restapi.dart';
 
 class ScannerCard extends StatefulWidget {
+  final String device_id;
   final List<BarcodeResult> result;
   final ScanProvider scanProvider;
 
   const ScannerCard({
     Key? key,
+    required this.device_id,
     required this.result,
     required this.scanProvider,
   }) : super(key: key);
@@ -25,7 +25,6 @@ class ScannerCard extends StatefulWidget {
 
 class _ScannerCardState extends State<ScannerCard> {
   int dataCount = 0;
-  String device_id = 'Unknown';
   String code = '';
   String format = '';
   String created_date = '';
@@ -36,7 +35,6 @@ class _ScannerCardState extends State<ScannerCard> {
   @override
   void initState() {
     super.initState();
-    iniDeviceId();
 
     DateTime now = DateTime.now();
     created_date = now.day.toString();
@@ -76,21 +74,6 @@ class _ScannerCardState extends State<ScannerCard> {
     }
   }
 
-  Future<void> iniDeviceId() async {
-    String udid;
-    try {
-      udid = await FlutterUdid.udid;
-    } on PlatformException {
-      udid = 'Failed to get Device Id.';
-    }
-
-    if (!mounted) return;
-
-    setState(() {
-      device_id = udid;
-    });
-  }
-
   DataService ds = DataService();
 
   @override
@@ -105,7 +88,7 @@ class _ScannerCardState extends State<ScannerCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Scanner (${widget.result.length})",
+                  "Scanner (${widget.result.length}- ${widget.device_id})",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -117,13 +100,12 @@ class _ScannerCardState extends State<ScannerCard> {
                       onPressed: () async {
                         setState(() async {
                           List<Map<String, dynamic>> resultsToSave = [];
-
                           // lakukan looping untuk widget.result
                           widget.result.forEach((item) {
                             // siapkan map berisi atribut untuk dimasukkan
                             Map<String, dynamic> resultAttributes = {
                               'appid': appid,
-                              'device_id': device_id,
+                              'device_id': widget.device_id,
                               'code': item.barcodeText,
                               'format': item.barcodeFormatString,
                               'created_date': created_date,

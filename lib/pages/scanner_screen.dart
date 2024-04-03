@@ -9,7 +9,11 @@ import '../utils/scan_provider.dart';
 import '../utils/scanner_card.dart';
 
 class ScannerScreen extends StatefulWidget {
-  const ScannerScreen({super.key});
+  final String device_id;
+  const ScannerScreen({
+    Key? key,
+    required this.device_id,
+  }) : super(key: key);
 
   @override
   State<ScannerScreen> createState() => _ScannerScreenState();
@@ -153,6 +157,11 @@ class _ScannerScreenState extends State<ScannerScreen>
                   ),
                 ),
               ),
+              // Positioned(
+              //     child: ScannerCard(
+              //   result: result,
+              //   scanProvider: _scanProvider,
+              // )),
               Positioned(
                 right: 16,
                 top: 16,
@@ -189,6 +198,7 @@ class _ScannerScreenState extends State<ScannerScreen>
         SizedBox(height: 16),
         Expanded(
             child: ScannerCard(
+          device_id: widget.device_id,
           result: result,
           scanProvider: _scanProvider,
         )),
