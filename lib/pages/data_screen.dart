@@ -37,9 +37,8 @@ class _DataScreenState extends State<DataScreen> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            return ListView.separated(
+            return ListView.builder(
               itemCount: scanResults.length,
-              separatorBuilder: (context, index) => Divider(),
               itemBuilder: (context, index) {
                 final item = scanResults[index];
                 return Card(

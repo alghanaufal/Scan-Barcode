@@ -50,7 +50,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _initLicense() async {
     try {
-      await DCVBarcodeReader.initLicense('DLS2(License)');
+      await DCVBarcodeReader.initLicense(
+          'DLS2eyJoYW5kc2hha2VDb2RlIjoiMTAyNjcyNjAxLVRYbE5iMkpwYkdWUWNtOXFYMlJpY2ciLCJtYWluU2VydmVyVVJMIjoiaHR0cHM6Ly9tZGxzLmR5bmFtc29mdG9ubGluZS5jb20iLCJvcmdhbml6YXRpb25JRCI6IjEwMjY3MjYwMSIsInN0YW5kYnlTZXJ2ZXJVUkwiOiJodHRwczovL3NkbHMuZHluYW1zb2Z0b25saW5lLmNvbSIsImNoZWNrQ29kZSI6LTEwNzgxODUzOTl9');
     } catch (e) {
       print(e);
     }
