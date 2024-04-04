@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'barcode_utils.dart';
 import 'scan_provider.dart';
@@ -89,7 +90,7 @@ class _ScannerCardState extends State<ScannerCard> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Scanner (${widget.result.length})",
+              "Data Terbaca (${widget.result.length})",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -146,7 +147,13 @@ class _ScannerCardState extends State<ScannerCard> {
                       );
                     });
                   },
-                  icon: Icon(Icons.save),
+                  icon: Row(
+                    children: [
+                      Icon(Icons.save),
+                      SizedBox(width: 2),
+                      Text('Save'),
+                    ],
+                  ),
                 ),
                 IconButton(
                   onPressed: () {
@@ -170,7 +177,13 @@ class _ScannerCardState extends State<ScannerCard> {
                       );
                     });
                   },
-                  icon: Icon(Icons.delete),
+                  icon: Row(
+                    children: [
+                      Icon(Icons.delete),
+                      SizedBox(width: 2),
+                      Text('Delete'),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -193,9 +206,18 @@ class _ScannerCardState extends State<ScannerCard> {
                 return ListTile(
                   title: createURLString(
                       widget.result.elementAt(index).barcodeText),
-                  subtitle: createURLString(
-                      widget.result.elementAt(index).barcodeFormatString),
-                  trailing: ElevatedButton(
+                  subtitle: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      widget.result.elementAt(index).barcodeFormatString,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  trailing: IconButton(
                     onPressed: () {
                       setState(() {
                         // Hapus data di indeks saat ini dari result
@@ -211,7 +233,7 @@ class _ScannerCardState extends State<ScannerCard> {
                         );
                       });
                     },
-                    child: Icon(Icons.delete),
+                    icon: Icon(Icons.delete),
                   ),
                 );
               },
@@ -222,213 +244,3 @@ class _ScannerCardState extends State<ScannerCard> {
     );
   }
 }
-
-    // Card(
-    //   margin: EdgeInsets.all(8.0),
-    //   child: ExpansionTile(
-    //     // Mengganti Card dengan ExpansionTile
-    //     title: Text(
-    //       "Scanner (${widget.result.length}- ${widget.device_id})",
-    //       style: TextStyle(
-    //         fontSize: 16,
-    //         fontWeight: FontWeight.bold,
-    //       ),
-    //     ),
-    //     children: [
-    //       Column(
-    //         children: [
-    //           SizedBox(height: 16),
-    //           ListView.separated(
-    //             shrinkWrap:
-    //                 true, // Perlu diatur agar ListView bisa digunakan di dalam ExpansionTile
-    //             itemCount: widget.result.length,
-    //             separatorBuilder: (context, index) => Divider(),
-    //             itemBuilder: (context, index) {
-    //               return Card(
-    //                 elevation: 2.0,
-    //                 margin: EdgeInsets.symmetric(
-    //                   vertical: 4.0,
-    //                   horizontal: 8.0,
-    //                 ),
-    //                 child: ListTile(
-    //                   title: createURLString(
-    //                       widget.result.elementAt(index).barcodeText),
-    //                   subtitle: createURLString(
-    //                       widget.result.elementAt(index).barcodeFormatString),
-    //                   trailing: ElevatedButton(
-    //                     onPressed: () {
-    //                       setState(() {
-    //                         // Hapus data di indeks saat ini dari result
-    //                         BarcodeResult removedData =
-    //                             widget.result.elementAt(index);
-    //                         widget.scanProvider.results.removeWhere(
-    //                             (key, value) => key == removedData.barcodeText);
-    //                         ScaffoldMessenger.of(context).showSnackBar(
-    //                           SnackBar(
-    //                             content: Text(
-    //                                 "Data dihapus: ${removedData.barcodeText} - ${removedData.barcodeFormatString}"),
-    //                           ),
-    //                         );
-    //                       });
-    //                     },
-    //                     child: Icon(Icons.delete),
-    //                   ),
-    //                 ),
-    //               );
-    //             },
-    //           ),
-    //         ],
-    //       ),
-    //     ],
-    //   ),
-    // );
-
-
-    // Card(
-    //   margin: EdgeInsets.all(8.0),
-    //   child: Padding(
-    //     padding: EdgeInsets.symmetric(horizontal: 16.0),
-    //     child: Column(
-    //       children: [
-    //         Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           children: [
-    //             Text(
-    //               "Scanner (${widget.result.length}- ${widget.device_id})",
-    //               style: TextStyle(
-    //                 fontSize: 16,
-    //                 fontWeight: FontWeight.bold,
-    //               ),
-    //             ),
-    //             Row(
-    //               children: [
-    //                 IconButton(
-    //                   onPressed: () async {
-    //                     setState(() async {
-    //                       List<Map<String, dynamic>> resultsToSave = [];
-    //                       // lakukan looping untuk widget.result
-    //                       widget.result.forEach((item) {
-    //                         // siapkan map berisi atribut untuk dimasukkan
-    //                         Map<String, dynamic> resultAttributes = {
-    //                           'appid': appid,
-    //                           'device_id': widget.device_id,
-    //                           'code': item.barcodeText,
-    //                           'format': item.barcodeFormatString,
-    //                           'created_date': created_date,
-    //                           'created_month': created_month,
-    //                           'created_month_name': created_month_name,
-    //                           'created_year': created_year
-    //                         };
-    //                         // tambahkan map to the list results untuk di save
-    //                         resultsToSave.add(resultAttributes);
-    //                         widget.scanProvider.results
-    //                             .remove(item.barcodeText);
-    //                       });
-
-    //                       // Insert seluruh result menggunakan DataService
-    //                       List res = await Future.wait(
-    //                           resultsToSave.map((result) async {
-    //                         // Insert result dan decode ke response
-    //                         return jsonDecode(await ds.insertScanned(
-    //                             result['appid'],
-    //                             result['device_id'],
-    //                             result['code'],
-    //                             result['format'],
-    //                             result['created_date'],
-    //                             result['created_month'],
-    //                             result['created_month_name'],
-    //                             result['created_year']));
-    //                       }));
-
-    //                       // Update dataCount with the number of saved results
-    //                       dataCount = res.length;
-
-    //                       widget.result.removeWhere((item) =>
-    //                           res.any((r) => r['code'] == item.barcodeText));
-
-    //                       widget.result.clear();
-
-    //                       // Show a SnackBar to confirm the number of saved results
-    //                       ScaffoldMessenger.of(context).showSnackBar(
-    //                         SnackBar(
-    //                           content: Text("$dataCount data saved."),
-    //                           duration: Duration(seconds: 1),
-    //                         ),
-    //                       );
-    //                     });
-    //                   },
-    //                   icon: Icon(Icons.save),
-    //                 ),
-    //                 IconButton(
-    //                   onPressed: () {
-    //                     setState(() {
-    //                       dataCount = 0;
-    //                       widget.result.forEach((item) {
-    //                         dataCount++;
-    //                       });
-    //                       // Memperbarui _scanProvider.results dengan data yang tersimpan
-    //                       widget.result.forEach((item) {
-    //                         widget.scanProvider.results
-    //                             .remove(item.barcodeText);
-    //                       });
-    //                       // Kosongkan result setelah disimpan di saveResult
-    //                       widget.result.clear();
-    //                       // Konfiramsi
-    //                       ScaffoldMessenger.of(context).showSnackBar(
-    //                         SnackBar(
-    //                           content: Text("$dataCount data removed."),
-    //                           duration: Duration(seconds: 1),
-    //                         ),
-    //                       );
-    //                     });
-    //                   },
-    //                   icon: Icon(Icons.delete),
-    //                 ),
-    //               ],
-    //             ),
-    //           ],
-    //         ),
-    //         SizedBox(height: 16),
-    //         Expanded(
-    //           child: ListView.separated(
-    //             itemCount: widget.result.length,
-    //             separatorBuilder: (context, index) => Divider(),
-    //             itemBuilder: (context, index) {
-    //               return Card(
-    //                 elevation: 2.0,
-    //                 margin: EdgeInsets.symmetric(
-    //                   vertical: 4.0,
-    //                   horizontal: 8.0,
-    //                 ),
-    //                 child: ListTile(
-    //                   title: createURLString(
-    //                       widget.result.elementAt(index).barcodeText),
-    //                   subtitle: createURLString(
-    //                       widget.result.elementAt(index).barcodeFormatString),
-    //                   trailing: ElevatedButton(
-    //                     onPressed: () {
-    //                       setState(() {
-    //                         // Hapus data di indeks saat ini dari result
-    //                         BarcodeResult removedData =
-    //                             widget.result.elementAt(index);
-    //                         widget.scanProvider.results.removeWhere(
-    //                             (key, value) => key == removedData.barcodeText);
-    //                         ScaffoldMessenger.of(context).showSnackBar(
-    //                           SnackBar(
-    //                             content: Text(
-    //                                 "Data dihapus: ${removedData.barcodeText} - ${removedData.barcodeFormatString}"),
-    //                           ),
-    //                         );
-    //                       });
-    //                     },
-    //                     child: Icon(Icons.delete),
-    //                   ),
-    //                 ),
-    //               );
-    //             },
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );

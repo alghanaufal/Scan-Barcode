@@ -138,12 +138,11 @@ class _ScannerScreenState extends State<ScannerScreen>
                     scanProvider: _scanProvider,
                   )),
               Positioned(
-                left: 5,
-                bottom: 16,
+                bottom: 24,
                 child: Row(
                   children: [
-                    InkWell(
-                      onTap: () {
+                    ElevatedButton(
+                      onPressed: () {
                         if (_isScanning) {
                           _isScanning = false;
                           stop();
@@ -153,24 +152,20 @@ class _ScannerScreenState extends State<ScannerScreen>
                           start();
                         }
                       },
-                      child: Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
-                        ),
-                        child: Center(
-                          child: Icon(
-                            _isScanning ? Icons.pause : Icons.play_arrow,
-                            color: Colors.white,
-                          ),
-                        ),
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 65),
+                        backgroundColor: Colors.transparent,
+                        side: BorderSide(color: Colors.white),
+                      ),
+                      child: Icon(
+                        _isScanning ? Icons.pause : Icons.play_arrow,
+                        color: Colors.white,
+                        size: 50,
                       ),
                     ),
-                    SizedBox(width: 10), // Menambahkan jarak antara tombol
-                    InkWell(
-                      onTap: () {
+                    SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
                         if (_isFlashOn) {
                           _isFlashOn = false;
                           _cameraEnhancer.turnOffTorch();
@@ -180,94 +175,23 @@ class _ScannerScreenState extends State<ScannerScreen>
                         }
                         setState(() {});
                       },
-                      child: Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
-                        ),
-                        child: Center(
-                          child: Icon(
-                            _isFlashOn ? Icons.flash_off : Icons.flash_on,
-                            color: Colors.white,
-                          ),
-                        ),
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 65),
+                        backgroundColor: Colors.transparent,
+                        side: BorderSide(color: Colors.white),
+                      ),
+                      child: Icon(
+                        _isFlashOn ? Icons.flashlight_off : Icons.flashlight_on,
+                        color: Colors.white,
+                        size: 50,
                       ),
                     ),
                   ],
                 ),
               ),
-              // Positioned(
-              //   left: 5,
-              //   bottom: 16,
-              //   child: InkWell(
-              //     onTap: () {
-              //       if (_isScanning) {
-              //         _isScanning = false;
-              //         stop();
-              //         setState(() {});
-              //       } else {
-              //         _isScanning = true;
-              //         start();
-              //       }
-              //     },
-              //     child: Container(
-              //       width: 60,
-              //       height: 60,
-              //       decoration: BoxDecoration(
-              //         shape: BoxShape.circle,
-              //         color: Colors.blue,
-              //       ),
-              //       child: Center(
-              //         child: Icon(
-              //           _isScanning ? Icons.pause : Icons.play_arrow,
-              //           color: Colors.white,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // Positioned(
-              //   right: 5,
-              //   bottom: 16,
-              //   child: InkWell(
-              //     onTap: () {
-              //       if (_isFlashOn) {
-              //         _isFlashOn = false;
-              //         _cameraEnhancer.turnOffTorch();
-              //       } else {
-              //         _isFlashOn = true;
-              //         _cameraEnhancer.turnOnTorch();
-              //       }
-              //       setState(() {});
-              //     },
-              //     child: Container(
-              //       width: 60,
-              //       height: 60,
-              //       decoration: BoxDecoration(
-              //         shape: BoxShape.circle,
-              //         color: Colors.blue,
-              //       ),
-              //       child: Center(
-              //         child: Icon(
-              //           _isFlashOn ? Icons.flash_off : Icons.flash_on,
-              //           color: Colors.white,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
-        // SizedBox(height: 16),
-        // Expanded(
-        //     child: ScannerCard(
-        //   device_id: widget.device_id,
-        //   result: result,
-        //   scanProvider: _scanProvider,
-        // )),
       ],
     );
   }

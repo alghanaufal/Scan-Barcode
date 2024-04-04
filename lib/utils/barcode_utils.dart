@@ -18,7 +18,7 @@ Widget createURLString(String text) {
       },
       child: Text(
         text,
-        style: const TextStyle(color: Colors.blue),
+        style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
       ),
       onTap: () async {
         launchUrlString(text);
@@ -29,7 +29,10 @@ Widget createURLString(String text) {
       onLongPress: () async {
         Share.share(text, subject: 'Scan Result');
       },
-      child: Text(text),
+      child: Text(
+        text,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
     );
   }
 }

@@ -49,8 +49,18 @@ class _DataScreenState extends State<DataScreen> {
                   ),
                   child: ListTile(
                     title: createURLString(item.code),
-                    subtitle: createURLString(item.format),
-                    trailing: ElevatedButton(
+                    subtitle: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        item.format,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    trailing: IconButton(
                       onPressed: () async {
                         bool res = await ds.removeId(
                             token, project, 'scanned', appid, item.id);
@@ -65,7 +75,7 @@ class _DataScreenState extends State<DataScreen> {
                           setState(() {});
                         }
                       },
-                      child: Icon(Icons.delete),
+                      icon: Icon(Icons.delete),
                     ),
                   ),
                 );
