@@ -1,5 +1,6 @@
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
 import 'package:flutter_udid/flutter_udid.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:scanbarcode/pages/data_screen.dart';
 
 import 'package:flutter/services.dart';
@@ -40,6 +41,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
   String _udid = 'Unknown';
+  bool light = false;
 
   @override
   void initState() {
@@ -86,12 +88,103 @@ class _MyHomePageState extends State<MyHomePage> {
             showModalBottomSheet(
               context: context,
               builder: (context) {
-                return Container(
-                  height: 200,
-                  child: Center(
-                    child: Text('ID : $_udid', textAlign: TextAlign.center),
-                  ),
-                );
+                return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              'Setting',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.close),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 1,
+                        child: Container(color: Colors.grey[400]),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: _udid));
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Teks berhasil disalin'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(10.0),
+                          // padding: EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: DottedBorder(
+                            // Menggunakan DottedBorder
+                            padding: EdgeInsets.all(16.0),
+                            borderType: BorderType.RRect,
+                            radius: Radius.circular(8.0),
+                            dashPattern: [6, 3], // Atur pola titik-titik
+                            color: Colors.grey,
+                            strokeWidth: 1,
+                            child: Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.copy),
+                                  SizedBox(width: 8.0),
+                                  Text(
+                                    'ID : $_udid',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.dark_mode),
+                        title: Text('Dark Mode'),
+                        trailing: Switch(
+                          value: light,
+                          onChanged: (bool value) {
+                            setState(() {
+                              light = value;
+                            });
+                          },
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.code),
+                        title: Text('GoCloud & ETTER'),
+                      )
+                    ]);
               },
             );
           } else {
