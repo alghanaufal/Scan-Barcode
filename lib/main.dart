@@ -92,6 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
+        selectedItemColor: Color(0xFF00603D),
         onTap: (index) {
           if (index == 2) {
             showModalBottomSheet(
@@ -148,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Container(
                           margin: EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                            color: Colors.green,
+                            color: Colors.greenAccent.shade100,
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: DottedBorder(
@@ -157,17 +158,22 @@ class _MyHomePageState extends State<MyHomePage> {
                             radius: Radius.circular(8.0),
                             dashPattern: [6, 3],
                             strokeWidth: 2,
-                            color: Colors.grey,
+                            color: Colors.green.shade900,
                             child: Container(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Icon(Icons.copy),
+                                  Icon(
+                                    Icons.copy,
+                                    color: Colors.green.shade900,
+                                  ),
                                   SizedBox(width: 8.0),
                                   Text(
                                     'ID : $_udid',
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 16.0),
+                                    style: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.green.shade900),
                                   ),
                                 ],
                               ),

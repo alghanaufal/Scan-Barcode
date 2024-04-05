@@ -27,7 +27,7 @@ class _DataScreenState extends State<DataScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("DataTerbaca"),
+        title: Text("Data Terbaca (${scanResults.length})"),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(1.0),
           child: Container(
@@ -67,7 +67,7 @@ class _DataScreenState extends State<DataScreen> {
                     title: createURLString(item.code),
                     subtitle: Container(
                       decoration: BoxDecoration(
-                        color: Colors.green,
+                        color: Color(0xFF00603D),
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       padding: EdgeInsets.all(8.0),
@@ -106,7 +106,6 @@ class _DataScreenState extends State<DataScreen> {
   Future<void> selectWhareScanned() async {
     data = jsonDecode(await ds.selectWhere(
         token, project, 'scanned', appid, 'device_id', widget.device_id));
-
     scanResults = data.map((e) => ScannedModel.fromJson(e)).toList();
   }
 }

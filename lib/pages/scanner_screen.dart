@@ -75,14 +75,12 @@ class _ScannerScreenState extends State<ScannerScreen>
         String msg = '';
         for (var i = 0; i < result.length; i++) {
           msg += '${result[i].barcodeText}\n';
-
           if (_scanProvider.results.containsKey(result[i].barcodeText)) {
             continue;
           } else {
             _scanProvider.results[result[i].barcodeText] = result[i];
           }
         }
-
         setState(() {});
       }
     });
