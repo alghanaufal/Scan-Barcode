@@ -9,10 +9,13 @@ import 'package:provider/provider.dart';
 
 import 'pages/scanner_screen.dart';
 import 'utils/scan_provider.dart';
+import 'utils/theme.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-      create: (_) => ScanProvider(), child: const MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => UiProvider()),
+    ChangeNotifierProvider(create: (_) => ScanProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -20,16 +23,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final uiProvider = Provider.of<UiProvider>(context);
+    final theme =
+        uiProvider.isDark ? uiProvider.darkTheme : uiProvider.lightTheme;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.greenAccent),
-        useMaterial3: true,
-      ),
+      theme: theme,
       home: const MyHomePage(),
     );
   }
 }
+
+class ThemeBuilder {}
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key});
@@ -42,12 +48,15 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
   String _udid = 'Unknown';
   bool light = false;
+  late UiProvider _uiProvider;
 
   @override
   void initState() {
     super.initState();
     initDeviceId();
     _initLicense();
+    _uiProvider = Provider.of<UiProvider>(context, listen: false);
+    _uiProvider.init();
   }
 
   Future<void> _initLicense() async {
@@ -138,19 +147,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         },
                         child: Container(
                           margin: EdgeInsets.all(10.0),
-                          // padding: EdgeInsets.all(16.0),
                           decoration: BoxDecoration(
                             color: Colors.green,
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: DottedBorder(
-                            // Menggunakan DottedBorder
                             padding: EdgeInsets.all(16.0),
                             borderType: BorderType.RRect,
                             radius: Radius.circular(8.0),
-                            dashPattern: [6, 3], // Atur pola titik-titik
+                            dashPattern: [6, 3],
+                            strokeWidth: 2,
                             color: Colors.grey,
-                            strokeWidth: 1,
                             child: Container(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -172,11 +179,14 @@ class _MyHomePageState extends State<MyHomePage> {
                         leading: Icon(Icons.dark_mode),
                         title: Text('Dark Mode'),
                         trailing: Switch(
-                          value: light,
+                          value: _uiProvider
+                              .isDark, // Use UiProvider to get current dark mode state
                           onChanged: (bool value) {
                             setState(() {
                               light = value;
                             });
+                            // Call changeTheme() from UiProvider to change theme
+                            _uiProvider.changeTheme();
                           },
                         ),
                       ),

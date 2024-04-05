@@ -28,6 +28,25 @@ class _DataScreenState extends State<DataScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("DataTerbaca"),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(1.0),
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0, 1),
+                ),
+              ],
+            ),
+            child: Divider(
+              height: 1.0,
+              color: Colors.transparent,
+            ),
+          ),
+        ),
       ),
       body: FutureBuilder(
         future: selectWhareScanned(),
@@ -42,11 +61,8 @@ class _DataScreenState extends State<DataScreen> {
               itemBuilder: (context, index) {
                 final item = scanResults[index];
                 return Card(
-                  elevation: 2.0,
-                  margin: EdgeInsets.symmetric(
-                    vertical: 4.0,
-                    horizontal: 8.0,
-                  ),
+                  elevation: 4.0,
+                  margin: EdgeInsets.all(6.0),
                   child: ListTile(
                     title: createURLString(item.code),
                     subtitle: Container(

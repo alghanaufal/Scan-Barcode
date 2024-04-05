@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'barcode_utils.dart';
 import 'scan_provider.dart';
