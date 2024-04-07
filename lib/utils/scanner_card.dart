@@ -84,7 +84,7 @@ class _ScannerCardState extends State<ScannerCard> {
 
     return Card(
       margin: EdgeInsets.all(8.0),
-      color: Color(0xFF00603D),
+      color: Color.fromRGBO(30, 76, 160, 1.0),
       // child: Theme(
       //   data: ThemeData.dark(),
       child: ExpansionTile(
@@ -227,7 +227,7 @@ class _ScannerCardState extends State<ScannerCard> {
                       widget.result.elementAt(index).barcodeText),
                   subtitle: Container(
                     decoration: BoxDecoration(
-                      color: Color(0xFF00603D),
+                      color: Color.fromRGBO(30, 76, 160, 1.0),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     padding: EdgeInsets.all(8.0),

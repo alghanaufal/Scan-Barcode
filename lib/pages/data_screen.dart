@@ -67,7 +67,7 @@ class _DataScreenState extends State<DataScreen> {
                     title: createURLString(item.code),
                     subtitle: Container(
                       decoration: BoxDecoration(
-                        color: Color(0xFF00603D),
+                        color: Color.fromRGBO(30, 76, 160, 1.0),
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       padding: EdgeInsets.all(8.0),

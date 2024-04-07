@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        selectedItemColor: Color(0xFF00603D),
+        selectedItemColor: Color.fromRGBO(30, 76, 160, 1.0),
         onTap: (index) {
           if (index == 2) {
             showModalBottomSheet(
@@ -149,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Container(
                           margin: EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
-                            color: Colors.greenAccent.shade100,
+                            color: Color.fromRGBO(35, 155, 219, 1.0),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: DottedBorder(
@@ -158,14 +158,14 @@ class _MyHomePageState extends State<MyHomePage> {
                             radius: Radius.circular(8.0),
                             dashPattern: [6, 3],
                             strokeWidth: 2,
-                            color: Colors.green.shade900,
+                            color: Color.fromRGBO(30, 76, 160, 1.0),
                             child: Container(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Icon(
                                     Icons.copy,
-                                    color: Colors.green.shade900,
+                                    color: Color.fromRGBO(30, 76, 160, 1.0),
                                   ),
                                   SizedBox(width: 8.0),
                                   Text(
@@ -173,7 +173,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 16.0,
-                                        color: Colors.green.shade900),
+                                        color:
+                                            Color.fromRGBO(30, 76, 160, 1.0)),
                                   ),
                                 ],
                               ),
