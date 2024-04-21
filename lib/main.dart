@@ -1,13 +1,14 @@
 import 'package:dynamsoft_capture_vision_flutter/dynamsoft_capture_vision_flutter.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:scanbarcode/pages/data_screen.dart';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/scanner_screen.dart';
+import 'pages/data_screen.dart';
+import 'pages/form_screen.dart';
 import 'utils/scan_provider.dart';
 import 'utils/theme.dart';
 
@@ -26,7 +27,6 @@ class MyApp extends StatelessWidget {
     final uiProvider = Provider.of<UiProvider>(context);
     final theme =
         uiProvider.isDark ? uiProvider.darkTheme : uiProvider.lightTheme;
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: theme,
@@ -54,9 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     initDeviceId();
-    _initLicense();
     _uiProvider = Provider.of<UiProvider>(context, listen: false);
     _uiProvider.init();
+    _initLicense();
   }
 
   Future<void> _initLicense() async {
@@ -88,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           ScannerScreen(device_id: _udid),
           DataScreen(device_id: _udid),
+          GoCloudEtterForm(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -186,13 +187,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         leading: Icon(Icons.dark_mode),
                         title: Text('Dark Mode'),
                         trailing: Switch(
-                          value: _uiProvider
-                              .isDark, // Use UiProvider to get current dark mode state
+                          value: _uiProvider.isDark,
                           onChanged: (bool value) {
                             setState(() {
                               light = value;
                             });
-                            // Call changeTheme() from UiProvider to change theme
                             _uiProvider.changeTheme();
                           },
                         ),
@@ -200,6 +199,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       ListTile(
                         leading: Icon(Icons.code),
                         title: Text('GoCloud & ETTER'),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          setState(() {
+                            _currentIndex = 2;
+                          });
+                        },
                       )
                     ]);
               },
