@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GoCloudEtterForm extends StatefulWidget {
   const GoCloudEtterForm({Key? key}) : super(key: key);
@@ -8,7 +9,10 @@ class GoCloudEtterForm extends StatefulWidget {
 }
 
 class _GoCloudEtterFormState extends State<GoCloudEtterForm> {
-  TextEditingController _textFieldController = TextEditingController();
+  TextEditingController _tokenController = TextEditingController();
+  TextEditingController _projectController = TextEditingController();
+  TextEditingController _collectionController = TextEditingController();
+  TextEditingController _appIdController = TextEditingController();
   int? _radioValue;
 
   @override
@@ -91,14 +95,15 @@ class _GoCloudEtterFormState extends State<GoCloudEtterForm> {
                 ),
               ),
               SizedBox(height: 5),
+              _buildLabeledTextField('Token', 'Your Token', _tokenController),
+              SizedBox(height: 5),
               _buildLabeledTextField(
-                  'Token', 'Your Token', _textFieldController),
+                  'Project', 'Project Name', _projectController),
               SizedBox(height: 5),
-              _buildLabeledTextField('Project', 'Project Name', null),
+              _buildLabeledTextField(
+                  'Collection', 'Your Collection', _collectionController),
               SizedBox(height: 5),
-              _buildLabeledTextField('Collection', 'Your Collection', null),
-              SizedBox(height: 5),
-              _buildLabeledTextField('AppID', 'Your App ID', null),
+              _buildLabeledTextField('AppID', 'Your App ID', _appIdController),
               SizedBox(height: 5),
               SizedBox(
                 width: double.infinity,
@@ -126,7 +131,10 @@ class _GoCloudEtterFormState extends State<GoCloudEtterForm> {
 
   @override
   void dispose() {
-    _textFieldController.dispose();
+    _tokenController.dispose();
+    _projectController.dispose();
+    _collectionController.dispose();
+    _appIdController.dispose();
     super.dispose();
   }
 
@@ -166,6 +174,21 @@ class _GoCloudEtterFormState extends State<GoCloudEtterForm> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<void> _saveDataLocally() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('token', _tokenController.text);
+    prefs.setString('project', _projectController.text);
+    prefs.setString('collection', _collectionController.text);
+    prefs.setString('appId', _appIdController.text);
+    prefs.setInt('radioValue',
+        _radioValue ?? 0); // Default value set to 0 if _radioValue is null
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Data saved locally'),
       ),
     );
   }
